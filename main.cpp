@@ -4,26 +4,54 @@ using namespace std;
 
 void print_element(char s[], int length);
 int num_of_nums(char s[], int length);
+int compare_arrays(char s1[], int length1, char s2[], int length2);
 
 int main(){
   char s1[] = "[1,[2,[3,[4,[5,6,7]]]],8,9]";
   char s2[] = "[1,[2,[3,[4,[5,6,0]]]],8,9]";
 
+  int smaller = compare_arrays(s1, sizeof(s1)-1, s2, sizeof(s2)-1);
+
+  cout << "\n" << smaller << "\n";
+
+  // 2 if they are equal look who has more numbers
+
+  // 3 if they hava the same ammount of numbers, who has more elements (brackets)
+  return 0;
+}
+
+void print_element(char s[], int length){
+  for(int i=0; i<length; i++){
+    cout << s[i];
+  }
+}
+
+int num_of_nums(char s[], int length){
+  int nc{0}; // # of number characters
+
+  for (int i = 0; i<(length); i++){
+    if (int(s[i]) <= 57 && int(s[i]) >= 48) nc++;// 48 = ascii(0), 57 = ascii(9)
+  }
+
+  return nc;
+}
+
+int compare_arrays(char s1[], int length1, char s2[], int length2){
   cout << "Compare ";
-  print_element(s1,sizeof(s1)-1);
+  print_element(s1,length1);
   cout << " vs ";
-  print_element(s2,sizeof(s2)-1);
+  print_element(s2,length2);
   cout << "\n";
 
   // compare them
   // 1 first remove the brackets and compare the numbers
   // 1.1 find the number of number characters
-  int nc1 = num_of_nums(s1,sizeof(s1)-1);
+  int nc1 = num_of_nums(s1,length1);
 
   int s1_int[nc1];
 
   int j{0};
-  for (int i = 0; i<(sizeof(s1)-1); i++){ //copy the numbers of s1 to an int array
+  for (int i = 0; i<length1; i++){ //copy the numbers of s1 to an int array
     if (int(s1[i]) <= 57 && int(s1[i]) >= 48){
       if(int(s1[i])==49 && int(s1[i+1])==48){
         // the number is 10 (2 chars)
@@ -38,11 +66,11 @@ int main(){
     }
   }
   cout << "\n";
-  int nc2 = num_of_nums(s2,sizeof(s2)-1);
+  int nc2 = num_of_nums(s2,length2);
 
   int s2_int[nc2];
   j=0;
-  for (int i = 0; i<(sizeof(s2)-1); i++){ //copy the numbers of s2 to an int array
+  for (int i = 0; i<length2; i++){ //copy the numbers of s2 to an int array
     if (int(s2[i]) <= 57 && int(s2[i]) >= 48){
       if(int(s2[i])==49 && int(s2[i+1])==48){
         // the number is 10 (2 chars)
@@ -71,26 +99,5 @@ int main(){
     }
   }
 
-  cout << "\n" << smaller << "\n";
-
-  // 2 if they are equal look who has more numbers
-
-  // 3 if they hava the same ammount of numbers, who has more elements (brackets)
-  return 0;
-}
-
-void print_element(char s[], int length){
-  for(int i=0; i<length; i++){
-    cout << s[i];
-  }
-}
-
-int num_of_nums(char s[], int length){
-  int nc{0}; // # of number characters
-
-  for (int i = 0; i<(length); i++){
-    if (int(s[i]) <= 57 && int(s[i]) >= 48) nc++;// 48 = ascii(0), 57 = ascii(9)
-  }
-
-  return nc;
+  return smaller;
 }
