@@ -10,38 +10,37 @@ int compare_arrays(char s1[], int length1, char s2[], int length2);
 int main(){
 
   ifstream ifs("input_example.txt");
+  
+  while(ifs.peek() != EOF){
+    int length1{0};
+    char temp1[1000]; //temp string to copy chars to
+    int length2{0};
+    char temp2[1000]; //temp string to copy chars to
 
-  int length1{0};
-  char temp1[1000]; //temp string to copy chars to
-  int length2{0};
-  char temp2[1000]; //temp string to copy chars to
+    for(int i=0; ifs.peek() != '\n'; i++){
+      temp1[i] = ifs.get();
+      length1++;
+    }
 
-  for(int i=0; ifs.peek() != '\n'; i++){
-    temp1[i] = ifs.get();
-    cout << temp1[i];
-    length1++;
+    ifs.get(); //discard the "\n"
+
+    for(int i=0; ifs.peek() != '\n'; i++){
+      temp2[i] = ifs.get();
+      length2++;
+    }
+
+    ifs.get(); //discard the "\n"
+    ifs.get(); //discard the "\n"
+
+    int smaller = compare_arrays(temp1, length1, temp2, length2);
+
+    cout << "\n" << smaller << "\n";
+
+    // 2 if they are equal look who has more numbers
+
+    // 3 if they hava the same ammount of numbers, who has more elements (brackets)
   }
-  cout << "\nmchars: " << length1 << "\n";
 
-  ifs.get(); //discard the "\n"
-
-  for(int i=0; ifs.peek() != '\n'; i++){
-    temp2[i] = ifs.get();
-    cout << temp2[i];
-    length2++;
-  }
-
-  cout << "\nmchars: " << length2 << "\n";
-
-  cout << "\n";
-
-  int smaller = compare_arrays(temp1, length1, temp2, length2);
-
-  cout << "\n" << smaller << "\n";
-
-  // 2 if they are equal look who has more numbers
-
-  // 3 if they hava the same ammount of numbers, who has more elements (brackets)
   return 0;
 }
 
