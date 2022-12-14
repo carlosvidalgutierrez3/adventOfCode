@@ -1,5 +1,6 @@
 //g++ -o a.out source.cpp
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 void print_element(char s[], int length);
@@ -7,10 +8,34 @@ int num_of_nums(char s[], int length);
 int compare_arrays(char s1[], int length1, char s2[], int length2);
 
 int main(){
-  char s1[] = "[1,[2,[3,[4,[5,6,7]]]],8,9]";
-  char s2[] = "[1,[2,[3,[4,[5,6,0]]]],8,9]";
 
-  int smaller = compare_arrays(s1, sizeof(s1)-1, s2, sizeof(s2)-1);
+  ifstream ifs("input_example.txt");
+
+  int length1{0};
+  char temp1[1000]; //temp string to copy chars to
+  int length2{0};
+  char temp2[1000]; //temp string to copy chars to
+
+  for(int i=0; ifs.peek() != '\n'; i++){
+    temp1[i] = ifs.get();
+    cout << temp1[i];
+    length1++;
+  }
+  cout << "\nmchars: " << length1 << "\n";
+
+  ifs.get(); //discard the "\n"
+
+  for(int i=0; ifs.peek() != '\n'; i++){
+    temp2[i] = ifs.get();
+    cout << temp2[i];
+    length2++;
+  }
+
+  cout << "\nmchars: " << length2 << "\n";
+
+  cout << "\n";
+
+  int smaller = compare_arrays(temp1, length1, temp2, length2);
 
   cout << "\n" << smaller << "\n";
 
