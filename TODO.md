@@ -7,5 +7,7 @@
   - Count the number of chars until "\n" and create an array of that size (OK)
 - Make a function out of taking from the txt file so it goes through all the pairs (OK)
 - Check cases when one side runs out of items
-- Keep track of the pair index
-- Sume the indices of the pairs that were on the right order
+- Keep track of the pair index (OK)
+- Sum the indices of the pairs that were on the right order (OK)
+
+The result is wrong for my input data, but right for the test data: That means that I am not comparing properly some case that does not happen in the example

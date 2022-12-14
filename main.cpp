@@ -9,9 +9,12 @@ int compare_arrays(char s1[], int length1, char s2[], int length2);
 
 int main(){
 
-  ifstream ifs("input_example.txt");
-  
+  ifstream ifs("input.txt");
+  int index{0}; // index of the pair
+  int index_sum{0}; // sum of the indexes of the pairs in the right order
+
   while(ifs.peek() != EOF){
+    index++;
     int length1{0};
     char temp1[1000]; //temp string to copy chars to
     int length2{0};
@@ -34,12 +37,22 @@ int main(){
 
     int smaller = compare_arrays(temp1, length1, temp2, length2);
 
-    cout << "\n" << smaller << "\n";
+    // 2 if they are equal look who has more characters
+    if (smaller == 0 && length1 < length2){
+      smaller = 1;
+    }
+    else if (smaller == 0 && length1 > length2){
+      smaller = 2;
+    }
 
-    // 2 if they are equal look who has more numbers
+    if(smaller == 1){
+      index_sum = index_sum + index;
+    }
+    cout << "Smaller: " << smaller << "\n\n";
 
-    // 3 if they hava the same ammount of numbers, who has more elements (brackets)
   }
+
+  cout << "\nRESULT = " << index_sum << "\n";
 
   return 0;
 }
@@ -85,11 +98,9 @@ int compare_arrays(char s1[], int length1, char s2[], int length2){
       else{
         s1_int[j] = int(s1[i])-48; // from ascii to int number
       }
-      cout << s1_int[j] << ",";
       j++;
     }
   }
-  cout << "\n";
   int nc2 = num_of_nums(s2,length2);
 
   int s2_int[nc2];
@@ -104,7 +115,6 @@ int compare_arrays(char s1[], int length1, char s2[], int length2){
       else{
         s2_int[j] = int(s2[i])-48; // from ascii to int number
       }
-      cout << s2_int[j] << ",";
       j++;
     }
   }
