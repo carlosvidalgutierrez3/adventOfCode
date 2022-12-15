@@ -12,6 +12,8 @@ struct coordinates
     int y;
 };
 
+vector<coordinates> stringLineToCoordinates(string rockPathLine, string delimiter);
+
 // returns all the cordinates that are rocks. Parameter: strings that describe a single path of rock each
 vector<coordinates> parseRockCoordinates(vector<string> rockPathLines)
 {
@@ -23,37 +25,10 @@ vector<coordinates> parseRockCoordinates(vector<string> rockPathLines)
     for (const auto &rockPathL : rockPathLines)                                         
     {
         // copy the value of the reference, to be able to edit it
-        rockPathLine = rockPathL;           
-
-        string delimiter = " -> ";
-        size_t pos = 0;
-        vector<coordinates> oneLineRockCoordinates;
-        string token,x,y;
+        rockPathLine = rockPathL;                  
+        vector<coordinates> oneLineRockCoordinates = stringLineToCoordinates(rockPathLine, " -> ");
 
         coordinates tmpCoordinates;
-
-        // iterate through each string describing a pair of coordinates and add to the vector of coordinates
-        while ((pos = rockPathLine.find(delimiter)) != std::string::npos)
-        {
-            token = rockPathLine.substr(0, pos);                                            // copy
-            rockPathLine.erase(pos-token.length(), delimiter.length()+token.length());      // remove copied part and delimiter 
-            
-            // Transform token to coordinates and push to the vector
-            x = token.substr(0,token.find(","));                                            // copy x coordinate
-            tmpCoordinates.x = stoi(x);                                                     // transform to int
-            y = token.substr(token.find(",")+1,token.length()-x.length());                  // copy y coordinate
-            tmpCoordinates.y = stoi(y);
-
-            oneLineRockCoordinates.push_back(tmpCoordinates);
-        }
-        // remaining string describing the last pair of coordinates of the line
-        token = rockPathLine;
-        x = token.substr(0, token.find(","));
-        tmpCoordinates.x = stoi(x);
-        y = token.substr(token.find(",") + 1, token.length() - x.length());
-        tmpCoordinates.y = stoi(y);
-
-        oneLineRockCoordinates.push_back(tmpCoordinates);
 
         // With the one line coordinates, create all the coordinates in between and copy to allRockCoordinates
         coordinates previous = oneLineRockCoordinates.at(0);
@@ -110,6 +85,40 @@ vector<coordinates> parseRockCoordinates(vector<string> rockPathLines)
     }
 
     return allRockCoordinates;
+}
+
+vector<coordinates> stringLineToCoordinates(string rockPathLine, string delimiter){
+
+    vector<coordinates> oneLineCoordinates;
+    size_t pos = 0;
+    string token, x, y;
+
+    coordinates tmpCoordinates;
+
+    // iterate through each string describing a pair of coordinates and add to the vector of coordinates
+    while ((pos = rockPathLine.find(delimiter)) != std::string::npos)
+    {
+        token = rockPathLine.substr(0, pos);                                           // copy
+        rockPathLine.erase(pos - token.length(), delimiter.length() + token.length()); // remove copied part and delimiter
+
+        // Transform token to coordinates and push to the vector
+        x = token.substr(0, token.find(","));                               // copy x coordinate
+        tmpCoordinates.x = stoi(x);                                         // transform to int
+        y = token.substr(token.find(",") + 1, token.length() - x.length()); // copy y coordinate
+        tmpCoordinates.y = stoi(y);
+
+        oneLineCoordinates.push_back(tmpCoordinates);
+    }
+    // remaining string describing the last pair of coordinates of the line
+    token = rockPathLine;
+    x = token.substr(0, token.find(","));
+    tmpCoordinates.x = stoi(x);
+    y = token.substr(token.find(",") + 1, token.length() - x.length());
+    tmpCoordinates.y = stoi(y);
+
+    oneLineCoordinates.push_back(tmpCoordinates);
+
+    return oneLineCoordinates;
 }
 
 #endif
