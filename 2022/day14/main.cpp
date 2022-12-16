@@ -1,57 +1,60 @@
-//g++ -o a.out source.cpp
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <vector>
-#include <string>
+#include "functions.h"
+
 using namespace std;
 
-struct pos{
-  int x;
-  int y;
-};
+int main()
+{
+    fstream fileIn("input.txt");
 
-bool isNumber(char c);
-
-int main(){
-  ifstream ifs("input_example.txt");
-
-  int by{0};  // biggest y position
-  int bx{0};  // x
-  int sy{0};  // smallest
-  int sx{0};
-  char temp[10];
-  string word;
-
-  getline(ifs,word,',');
-  bx = stoi(word);
-  sx = stoi(word);
-
-  getline(ifs,word,' ');
-  by = stoi(word);
-  sy = stoi(word);
-
-  while(!isNumber(ifs.peek())){
-    ifs.ignore();
-  }
-
-  cout << ifs.peek();
-
-  /*
-  while(ifs.peek() != EOF){
-    //cout << ifs.peek();
-    int i=0;
-    while(ifs.peek() != ','){
-      temp[i] = ifs.get();
-      cout << temp[i];
-      i++;
+    string lineBuffer;
+    vector<string> lines;
+    while (getline(fileIn, lineBuffer))
+    {
+        //cout << lineBuffer << "\n";
+        lines.push_back(move(lineBuffer));
     }
-  }
-  */
 
+    // Get all rock coordinates
+    vector<coordinates> allRockCoordinates = parseRockCoordinates(lines);
 
-  return 0;
+    // printMap with rock only
+    //printMap(allRockCoordinates);
+
+    // while sand not overflowing last layer of rock, keep adding sand
+    coordinates newGrainSettledPosition;
+    newGrainSettledPosition.x = 500;
+    newGrainSettledPosition.y = 1;
+    vector<coordinates> allSandCoordinates;
+    int floorY = absoluteCoordinates(allRockCoordinates).at(1).y;
+    cout << "floorY: " << floorY << endl;
+
+    // Uncomment here to see the map with a specific number of grains (number in the for)
+    /*
+    for(int i=0; i<700; i++){
+        newGrainSettledPosition = addNewGrain(allRockCoordinates, allSandCoordinates, floorY);
+        allSandCoordinates.push_back(newGrainSettledPosition);
+    }
+    printMap(allRockCoordinates, allSandCoordinates);
+    */
+
+    int nGrains = 0;
+    
+    while(newGrainSettledPosition.y < floorY){
+        newGrainSettledPosition = addNewGrain(allRockCoordinates, allSandCoordinates, floorY);
+        allSandCoordinates.push_back(newGrainSettledPosition);
+        nGrains++;
+    }
+    nGrains-1;
+
+    printMap(allRockCoordinates, allSandCoordinates);
+    
+    // result of the challenge
+    cout << "nGrains: " << nGrains << endl;
+    
+
+    return 0;
 }
 
-bool isNumber(char c){
-  return (c >= 48 && c <= 57);
-}
