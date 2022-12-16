@@ -21,18 +21,35 @@ int main()
     vector<coordinates> allRockCoordinates = parseRockCoordinates(lines);
 
     // printMap with rock only
-    printMap(allRockCoordinates);
+    //printMap(allRockCoordinates);
 
     // while sand not overflowing last layer of rock, keep adding sand
     coordinates newGrainSettledPosition;
     newGrainSettledPosition.x = 500;
-    newGrainSettledPosition.y = 0;
+    newGrainSettledPosition.y = 1;
     vector<coordinates> allSandCoordinates;
-
     int floorY = absoluteCoordinates(allRockCoordinates).at(1).y;
+     cout << "floorY: " << floorY << endl;
+    /*for(int i=0; i<24; i++){
+        newGrainSettledPosition = addNewGrain(allRockCoordinates, allSandCoordinates, floorY);
+        cout << "New grain: " << newGrainSettledPosition.x << "," << newGrainSettledPosition.y << "\n";
+
+        allSandCoordinates.push_back(newGrainSettledPosition);
+        printMap(allRockCoordinates, allSandCoordinates);
+    }*/
+
+    int nGrains = 0;
+    
     while(newGrainSettledPosition.y < floorY){
-        newGrainSettledPosition = addNewGrain(allRockCoordinates, allSandCoordinates);
+        newGrainSettledPosition = addNewGrain(allRockCoordinates, allSandCoordinates, floorY);
+        allSandCoordinates.push_back(newGrainSettledPosition);
+        printMap(allRockCoordinates, allSandCoordinates);
+        nGrains++;
     }
+    nGrains-1;
+
+    cout << "nGrains: " << nGrains << endl;
+    
 
     return 0;
 }

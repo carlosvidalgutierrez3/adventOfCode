@@ -21,6 +21,8 @@ coordinates smallestCoordinates(vector<coordinates> rockCoordinates);
 void printMap(vector<coordinates> rockCoordinates);
 void printMap(vector<coordinates> rockCoordinates, vector<coordinates> sandCoordinates);
 
+coordinates addNewGrain(vector<coordinates> allRockCoordinates, vector<coordinates> allSandCoordinates, int floorY);
+
 // returns all the cordinates that are rocks. Parameter: strings that describe a single path of rock each
 vector<coordinates> parseRockCoordinates(vector<string> rockPathLines)
 {
@@ -178,7 +180,104 @@ void printMap(vector<coordinates> rockCoordinates){
 }
 
 void printMap(vector<coordinates> rockCoordinates, vector<coordinates> sandCoordinates){
-    cout << "printMap" << " with sand\n";
+    //cout << "printMap" << " with sand\n";
+    // find the biggest and smallest x and y
+    coordinates smallest, biggest;
+    vector<coordinates> absoluteCoords = absoluteCoordinates(rockCoordinates);
+    
+    smallest = absoluteCoords.at(0);
+    biggest = absoluteCoords.at(1);
+
+    //cout << "Smallest (x,y): (" << smallest.x << "," << smallest.y << ")\n";
+    //cout << "Biggest (x,y): (" << biggest.x << "," << biggest.y << ")\n";
+
+    // print the source of sand (in x=500)
+    cout << "0 ";
+    for(int x = smallest.x; x <= biggest.x; x++){
+        if(x == 500){
+            cout << "+";
+        }
+        else{
+            cout << ".";
+        }
+    }
+    cout << "\n";
+
+    // go from smallest y (then from smallest x and print rock or air)
+    for (int y = 1; y <= biggest.y; y++){
+        cout << y << " ";
+        for (int x = smallest.x; x <= biggest.x; x++){
+            // use lambda expression to check coordinates type
+            if(count_if(rockCoordinates.begin(), rockCoordinates.end(),[&](const coordinates& c){
+                return (c.x == x && c.y == y);
+            })){
+                cout << "#";
+            }
+            else if(count_if(sandCoordinates.begin(), sandCoordinates.end(),[&](const coordinates& c){
+                return (c.x == x && c.y == y);
+            })){
+                cout << "O";
+            }
+            else{
+                cout << ".";
+            }
+        }
+        cout << "\n";
+    }
+
+}
+
+coordinates addNewGrain(vector<coordinates> allRockCoordinates, vector<coordinates> allSandCoordinates, int floorY)
+{
+    coordinates newGrain;
+    newGrain.x = 500;
+    newGrain.y = 0;
+    bool settled{false};
+
+    // while it doesn't settle, let it fall
+    for (newGrain.y = 0; !settled && newGrain.y <= floorY; newGrain.y++)
+    {
+
+        // if something under (else do nothing, y position increases with the loop)
+        if (count_if(allRockCoordinates.begin(), allRockCoordinates.end(), [&](const coordinates &c) { // a
+                return (c.y == newGrain.y + 1 && c.x == newGrain.x);                                   // very
+            }) ||
+            count_if(allSandCoordinates.begin(), allSandCoordinates.end(), [&](const coordinates &c) { // long
+                return (c.y == newGrain.y + 1 && c.x == newGrain.x);                                   // if statement
+            }))
+        {
+
+            // and if something under and to the left (else move left)
+            if (count_if(allRockCoordinates.begin(), allRockCoordinates.end(), [&](const coordinates &c)
+                         { return (c.y == newGrain.y + 1 && c.x == newGrain.x - 1); }) ||
+                count_if(allSandCoordinates.begin(), allSandCoordinates.end(), [&](const coordinates &c)
+                         { return (c.y == newGrain.y + 1 && c.x == newGrain.x - 1); }))
+            {
+
+                // and if somehing under and to the right (else move right)
+                if (count_if(allRockCoordinates.begin(), allRockCoordinates.end(), [&](const coordinates &c)
+                             { return (c.y == newGrain.y + 1 && c.x == newGrain.x + 1); }) ||
+                    count_if(allSandCoordinates.begin(), allSandCoordinates.end(), [&](const coordinates &c)
+                             { return (c.y == newGrain.y + 1 && c.x == newGrain.x + 1); }))
+                {
+
+                    // Settle
+                    settled = true;
+                }
+                else
+                {
+                    newGrain.x++;
+                }
+            }
+            else
+            {
+                newGrain.x--;
+            }
+        }
+    }
+    
+    newGrain.y--;
+    return newGrain;
 }
 
 #endif
