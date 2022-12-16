@@ -20,6 +20,19 @@ int main()
     // Get all rock coordinates
     vector<coordinates> allRockCoordinates = parseRockCoordinates(lines);
 
+    // printMap with rock only
+    printMap(allRockCoordinates);
+
+    // while sand not overflowing last layer of rock, keep adding sand
+    coordinates newGrainSettledPosition;
+    newGrainSettledPosition.x = 500;
+    newGrainSettledPosition.y = 0;
+    vector<coordinates> allSandCoordinates;
+
+    int floorY = absoluteCoordinates(allRockCoordinates).at(1).y;
+    while(newGrainSettledPosition.y < floorY){
+        newGrainSettledPosition = addNewGrain(allRockCoordinates, allSandCoordinates);
+    }
 
     return 0;
 }
