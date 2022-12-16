@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-    fstream fileIn("input.txt");
+    fstream fileIn("input_example.txt");
 
     string lineBuffer;
     vector<string> lines;
@@ -47,7 +47,7 @@ int main()
         allSandCoordinates.push_back(newGrainSettledPosition);
         nGrains++;
     }
-    nGrains-1;
+    nGrains--;
 
     printMap(allRockCoordinates, allSandCoordinates);
     
