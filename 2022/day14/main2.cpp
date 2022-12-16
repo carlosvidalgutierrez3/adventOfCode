@@ -7,13 +7,13 @@ using namespace std;
 
 int main()
 {
-    fstream fileIn("input_example.txt");
+    fstream fileIn("input.txt");
 
     string lineBuffer;
     vector<string> lines;
     while (getline(fileIn, lineBuffer))
     {
-        cout << lineBuffer << "\n";
+        //cout << lineBuffer << "\n";
         lines.push_back(move(lineBuffer));
     }
 
@@ -29,25 +29,28 @@ int main()
     newGrainSettledPosition.y = 1;
     vector<coordinates> allSandCoordinates;
     int floorY = absoluteCoordinates(allRockCoordinates).at(1).y;
-     cout << "floorY: " << floorY << endl;
-    /*for(int i=0; i<24; i++){
-        newGrainSettledPosition = addNewGrain(allRockCoordinates, allSandCoordinates, floorY);
-        cout << "New grain: " << newGrainSettledPosition.x << "," << newGrainSettledPosition.y << "\n";
+    cout << "floorY: " << floorY << endl;
 
+    // Uncomment here to see the map with a specific number of grains (number in the for)
+    /*
+    for(int i=0; i<700; i++){
+        newGrainSettledPosition = addNewGrain(allRockCoordinates, allSandCoordinates, floorY);
         allSandCoordinates.push_back(newGrainSettledPosition);
-        printMap(allRockCoordinates, allSandCoordinates);
-    }*/
+    }
+    printMap(allRockCoordinates, allSandCoordinates);
+    */
 
     int nGrains = 0;
     
     while(newGrainSettledPosition.y < floorY){
         newGrainSettledPosition = addNewGrain(allRockCoordinates, allSandCoordinates, floorY);
         allSandCoordinates.push_back(newGrainSettledPosition);
-        printMap(allRockCoordinates, allSandCoordinates);
         nGrains++;
     }
     nGrains-1;
 
+    printMap(allRockCoordinates, allSandCoordinates);
+    
     cout << "nGrains: " << nGrains << endl;
     
 
