@@ -23,17 +23,16 @@ int main()
     // printMap with rock only
     //printMap(allRockCoordinates);
 
-    // while sand not overflowing last layer of rock, keep adding sand
     coordinates newGrainSettledPosition;
     newGrainSettledPosition.x = 500;
     newGrainSettledPosition.y = 1;
     vector<coordinates> allSandCoordinates;
-    int floorY = absoluteCoordinates(allRockCoordinates).at(1).y;
-    cout << "floorY: " << floorY << endl;
+    int floorY = absoluteCoordinates(allRockCoordinates).at(1).y;   // get the coordinate y of the lowest rock
+    //cout << "floorY: " << floorY << endl;
 
-    // Uncomment here to see the map with a specific number of grains (number in the for)
+    // Uncomment here to see the map with a specific number of grains (number of iterations in the loop)
     /*
-    for(int i=0; i<700; i++){
+    for(int i=0; i<100; i++){
         newGrainSettledPosition = addNewGrain(allRockCoordinates, allSandCoordinates, floorY);
         allSandCoordinates.push_back(newGrainSettledPosition);
     }
@@ -42,12 +41,13 @@ int main()
 
     int nGrains = 0;
     
+    // while sand not overflowing last layer of rock, keep adding sand
     while(newGrainSettledPosition.y < floorY){
         newGrainSettledPosition = addNewGrain(allRockCoordinates, allSandCoordinates, floorY);
         allSandCoordinates.push_back(newGrainSettledPosition);
         nGrains++;
     }
-    nGrains--;
+    nGrains--;  // first grain to overflow
 
     printMap(allRockCoordinates, allSandCoordinates);
     
