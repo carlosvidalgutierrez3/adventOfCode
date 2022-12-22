@@ -1,0 +1,5 @@
+# ignore these files:
+
+.vscode
+.exe
+/2022/day13
